@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">iBiker</string>
+
+    <!--main activity-->
+    <string name="record_route_card_title">Record route.</string>
+    <string name="record_route_card_button">Lets go!</string>
+    <string name="list_routes_card_title">See available routes.</string>
+    <string name="list_routes_card_button">Show me.</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="login_state">Register?</string>
+    <string name="fields_unfilled">All fields have to be filled.</string>
+    <string name="email_badly_formatted">Email is badly formatted.</string>
+    <string name="login_successful">Login successful.</string>
+    <string name="register_successful">Register successful.</string>
+
+    <!--main menu-->
+    <string name="sign_out">Sign Out</string>
 </resources>
