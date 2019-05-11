@@ -6,22 +6,48 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".RouteTrackerActivity">
-    <fragment
+    <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/map"
-            tools:context=".RouteTrackerActivity"
-            android:name="com.google.android.gms.maps.SupportMapFragment"/>
-    <TextView
-            android:text="@string/calculating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/timeTextView"
-            app:layout_constraintBottom_toTopOf="@+id/flowButton" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp"/>
-    <Button
-            android:text="@string/pause_recording"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/flowButton"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent"
-            android:onClick="onFlowClick"/>
+            android:layout_height="match_parent">
+        <fragment
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="40"
+                android:id="@+id/map"
+                tools:context=".RouteTrackerActivity"
+                android:name="com.google.android.gms.maps.SupportMapFragment"/>
+        <android.support.design.widget.TabLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" android:layout_weight="80" android:id="@+id/tabLayout">
+            <android.support.design.widget.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/tabItem" android:text="@string/info_tab"/>
+            <android.support.design.widget.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/tabItem2" android:text="@string/photos_tab"/>
+        </android.support.design.widget.TabLayout>
+        <android.support.v4.view.ViewPager
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" android:layout_weight="60" android:id="@+id/viewPager"/>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <Button
+                    android:text="@string/pause_recording"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/flowButton"
+                    android:onClick="onFlowClick" android:layout_marginBottom="8dp"
+                    android:layout_marginStart="8dp"
+            />
+            <Button
+                    android:text="@string/capture_photo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/photoButton"
+                    android:onClick="onPhotoCaptureClick" android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+            />
+        </LinearLayout>
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>

@@ -1,14 +1,13 @@
-package com.puntl.ibiker
+package com.puntl.ibiker.services
 
-import android.util.Log
-import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
+import com.puntl.ibiker.RequestQueueProvider
 import org.json.JSONObject
 
 private const val TAG = "ServiceVolley"
-private const val BASE_URL = "http://10.0.2.2:8080/api"
+private const val BASE_URL = "http://192.168.0.178:8080/api"
 class ServiceVolley {
 
     fun callApi (path: String, method: Int, params: JSONObject, tag: String,  completionHandler: (response: JSONObject?) -> Unit, errorHandler: (error: VolleyError) -> Unit) {
