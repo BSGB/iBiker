@@ -33,21 +33,26 @@
         <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content" style="?attr/buttonBarStyle">
             <Button
                     android:text="@string/pause_recording"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:id="@+id/flowButton"
                     android:onClick="onFlowClick" android:layout_marginBottom="8dp"
                     android:layout_marginStart="8dp"
-            />
+                    style="?attr/buttonBarStyle"/>
             <Button
                     android:text="@string/capture_photo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:id="@+id/photoButton"
-                    android:onClick="onPhotoCaptureClick" android:layout_marginEnd="8dp"
+                    android:onClick="onPhotoCaptureClick" android:layout_marginEnd="0dp"
                     android:layout_marginBottom="8dp"
-            />
+                    style="?attr/buttonBarStyle"/>
+            <Button
+                    android:text="@string/save_route"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/saveButton" style="?attr/buttonBarStyle"
+                    android:visibility="invisible" android:onClick="onSaveRouteClick"/>
         </LinearLayout>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

@@ -17,8 +17,9 @@ import android.support.v4.app.NotificationCompat
 import com.puntl.ibiker.R
 import android.provider.Settings
 import android.support.v4.content.ContextCompat
+import com.puntl.ibiker.models.LocationUpdate
 
-private const val UPDATE_TIME = 10000L
+private const val UPDATE_TIME = 5000L
 private const val MIN_DISTANCE = 0F
 private const val NOTIFICATION_ID = 1
 private const val NOTIFICATION_CHANNEL_ID = "location_service"
@@ -29,10 +30,10 @@ class LocationTrackerService: Service() {
 
     companion object {
         const val BROADCAST_ACTION = "location_update"
-        const val BROADCAST_EXTRA_LOCATIONS = "locations"
+        const val BROADCAST_EXTRA_LOCATIONS = "locationUpdates"
         var isRunning = false
 
-        val locations = ArrayList<Location>()
+        val locationUpdates = ArrayList<LocationUpdate>()
     }
 
     private lateinit var locationManager: LocationManager
@@ -75,17 +76,17 @@ class LocationTrackerService: Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
         val locationBroadcast = Intent(BROADCAST_ACTION)
-        var parcelableLocations: Array<Location?>
+        var parcelableLocations: Array<LocationUpdate?>
 
         locationListener = object : LocationListener {
             override fun onLocationChanged(location: Location?) {
                 if (!isRunning) return
 
-                locations.add(location!!)
+                locationUpdates.add(LocationUpdate(location!!, System.currentTimeMillis()))
 
-                parcelableLocations = arrayOfNulls(locations.size)
+                parcelableLocations = arrayOfNulls(locationUpdates.size)
 
-                locations.toArray(parcelableLocations)
+                locationUpdates.toArray(parcelableLocations)
 
                 locationBroadcast.putExtra(BROADCAST_EXTRA_LOCATIONS, parcelableLocations).also { sendBroadcast(it) }
             }
@@ -126,7 +127,7 @@ class LocationTrackerService: Service() {
     override fun onDestroy() {
         super.onDestroy()
         locationManager.removeUpdates(locationListener)
-        locations.clear()
+        locationUpdates.clear()
         stopForeground(true)
     }
 }

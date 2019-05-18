@@ -1,13 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
+             xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              tools:context=".fragments.InfoFragment">
 
-    <TextView
+    <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/calculating" android:id="@+id/timeTextView"/>
+            android:layout_height="match_parent" android:padding="20px">
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/calculating" android:id="@+id/timeTextView" app:autoSizeTextType="uniform"
+                android:layout_weight="33"/>
+        <TextView
+                android:text="@string/calculating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/speedTextView" app:autoSizeTextType="uniform"
+                android:layout_weight="33"/>
+        <TextView
+                android:text="@string/calculating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/distanceTextView" app:autoSizeTextType="uniform"
+                android:layout_weight="33"/>
+    </LinearLayout>
 
 </FrameLayout>
