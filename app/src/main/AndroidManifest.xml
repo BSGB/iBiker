@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
           package="com.puntl.ibiker">
 
     <!--
@@ -14,8 +15,11 @@
     <uses-permission android:name="android.permission.READ_PROFILE"/>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-feature android:name="android.hardware.camera2"
-    android:required="false"/>
+
+    <uses-feature
+            android:name="android.hardware.camera2"
+            android:required="false"/>
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
@@ -41,19 +45,31 @@
                 android:value="@string/google_maps_key"/>
 
         <activity
+                android:name=".PublicationEditorActivity"
+                android:label="@string/title_activity_publication_editor"
+                android:windowSoftInputMode="adjustPan"
+                android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".PublicationCenterActivity"
+                  android:screenOrientation="portrait">
+        </activity>
+        <activity
                 android:name=".RouteTrackerActivity"
                 android:label="@string/title_activity_route_tracker"
                 android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".LoginRegisterActivity">
+        <activity android:name=".LoginRegisterActivity"
+                  android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
         <service android:name=".services.LocationTrackerService"/>
 
         <provider
@@ -63,9 +79,8 @@
                 android:grantUriPermissions="true">
             <meta-data
                     android:name="android.support.FILE_PROVIDER_PATHS"
-                    android:resource="@xml/file_paths"></meta-data>
+                    android:resource="@xml/file_paths"/>
         </provider>
-
     </application>
 
 </manifest>

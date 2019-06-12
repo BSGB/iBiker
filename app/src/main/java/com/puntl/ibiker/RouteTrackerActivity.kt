@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.BitmapFactory
-import android.graphics.Point
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -18,7 +17,6 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
-import android.widget.ImageView
 import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.VolleyError
@@ -27,7 +25,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
-import com.puntl.ibiker.companions.Base64Encoder
+import com.puntl.ibiker.companions.Base64Xcoder
 import com.puntl.ibiker.companions.RouteProvider
 import com.puntl.ibiker.companions.SessionProvider
 import com.puntl.ibiker.models.LocationUpdate
@@ -37,7 +35,7 @@ import com.puntl.ibiker.services.LocationTrackerService
 import com.puntl.ibiker.services.ServiceVolley
 import com.squareup.moshi.Moshi
 import kotlinx.android.synthetic.main.activity_route_tracker.*
-import kotlinx.android.synthetic.main.fragment_info.*
+import kotlinx.android.synthetic.main.fragment_record_info.*
 import kotlinx.android.synthetic.main.fragment_photos.*
 import org.json.JSONObject
 import java.io.File
@@ -64,16 +62,16 @@ class RouteTrackerActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var handler: Handler
     private lateinit var runnable: Runnable
     private lateinit var recordStatus: RecordStatus
-    private lateinit var size: Point
 
     private val locationUpdates = mutableListOf<LocationUpdate>()
     private val routeStops = mutableListOf<RouteStop>()
+    private val photoPaths = mutableListOf<String>()
 
     private var startTime = 0L
     private var pauseTime = 0L
     private var delta = 0L
-    private var displayWidth = 0
-    private var lastPhotoFilePath = ""
+//    private var lastPhotoFilePath = ""
+    private var imageIndex: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,12 +91,6 @@ class RouteTrackerActivity : AppCompatActivity(), OnMapReadyCallback {
         startTimer()
 
         recordStatus = RecordStatus.RUNNING
-
-        windowManager.defaultDisplay.also {
-            size = Point()
-            it.getSize(size)
-            displayWidth = size.x
-        }
     }
 
     override fun onResume() {
@@ -294,7 +286,7 @@ class RouteTrackerActivity : AppCompatActivity(), OnMapReadyCallback {
         val bounds = builder.build()
         val cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, BOUNDS_OFFSET)
 
-        mMap.addMarker(MarkerOptions().position(latLngs[0]).title(getString(R.string.start_pin_title)))
+        mMap.addMarker(MarkerOptions().position(latLngs.first()).title(getString(R.string.start_pin_title)))
 
         routeStops.forEach {
             mMap.addMarker(MarkerOptions().position(it.geoTag))
@@ -317,22 +309,23 @@ class RouteTrackerActivity : AppCompatActivity(), OnMapReadyCallback {
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
         val storageDir: File = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile(
-            "JPEG_${timeStamp}_",
-            ".jpg",
+            "PNG_${timeStamp}_",
+            ".png",
             storageDir
         ).apply {
-            lastPhotoFilePath = absolutePath
+            photoPaths.add(absolutePath)
         }
     }
 
     private fun saveRoute() {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
 
-        val userID = SessionProvider.getUser(sharedPreferences).userID
+        val userId = SessionProvider.getUser(sharedPreferences).userId
 
         val routeToSave =
             Route(
-                userID,
+                null,
+                userId,
                 false,
                 startTime,
                 System.currentTimeMillis(),
@@ -341,7 +334,10 @@ class RouteTrackerActivity : AppCompatActivity(), OnMapReadyCallback {
                 RouteProvider.getLatLngs(locationUpdates),
                 RouteProvider.getAverages(locationUpdates),
                 routeStops,
-                null
+                null,
+                null,
+                null,
+                mutableListOf()
             )
 
         val volley = ServiceVolley()
@@ -355,8 +351,8 @@ class RouteTrackerActivity : AppCompatActivity(), OnMapReadyCallback {
         )
     }
 
-    private fun handleSaveError(error: VolleyError) {
-        val messageJSON = JSONObject(String(error.networkResponse.data))
+    private fun handleSaveError(error: VolleyError?) {
+        val messageJSON = JSONObject(String(error?.networkResponse!!.data))
         val messageString = messageJSON.get("message").toString()
         Toast.makeText(this, messageString, Toast.LENGTH_LONG).show()
     }
@@ -366,40 +362,44 @@ class RouteTrackerActivity : AppCompatActivity(), OnMapReadyCallback {
         finish()
     }
 
-    private fun setPic() {
-        val targetW: Int = displayWidth
+    private fun loadPicture() {
+        if (imageIndex < 0) imageIndex = 0
+        if (imageIndex > photoPaths.lastIndex) imageIndex = photoPaths.lastIndex
 
-        val bmOptions = BitmapFactory.Options().apply {
-            inJustDecodeBounds = true
-            BitmapFactory.decodeFile(lastPhotoFilePath, this)
-            val photoW: Int = outWidth
-
-            val scaleFactor: Int = Math.min(photoW / targetW, 0)
-
-            inJustDecodeBounds = false
-            inSampleSize = scaleFactor
+        val options = BitmapFactory.Options().apply {
+            inSampleSize = 7
         }
 
-        BitmapFactory.decodeFile(lastPhotoFilePath, bmOptions)?.also { bitmap ->
-            photosLinearLayout?.addView(ImageView(this).apply {
-                setPadding(0, 0, 0, 10)
-                adjustViewBounds = true
-                setImageBitmap(bitmap)
-            })
+        BitmapFactory.decodeFile(photoPaths[imageIndex], options)?.also { bitmap ->
+            imageView.apply {
+                    setPadding(0, 0, 0, 10)
+                    adjustViewBounds = true
+                    setImageBitmap(bitmap)
+            }
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_PHOTO_CAPTURE && resultCode == RESULT_OK) {
-            setPic()
+        previousActionButton.setOnClickListener {
+            imageIndex--
+            loadPicture()
+        }
 
-            val imageString = Base64Encoder.imageToString(lastPhotoFilePath)
+        nextActionButton.setOnClickListener {
+            imageIndex++
+            loadPicture()
+        }
+
+        if (requestCode == REQUEST_PHOTO_CAPTURE && resultCode == RESULT_OK) {
+            loadPicture()
+
+            val imageString = Base64Xcoder.imagePathToString(photoPaths.last())
 
             val lastLocationUpdate = LocationTrackerService.locationUpdates.last()
             val lastLatitude = lastLocationUpdate.location.latitude
             val lastLongitude = lastLocationUpdate.location.longitude
 
-            RouteStop(imageString, LatLng(lastLatitude, lastLongitude)).let { routeStops.add(it) }
+            RouteStop(imageString, null, LatLng(lastLatitude, lastLongitude)).let { routeStops.add(it) }
         }
     }
 }

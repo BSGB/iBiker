@@ -6,6 +6,8 @@
     <string name="record_route_card_button">Lets go!</string>
     <string name="list_routes_card_title">See available routes.</string>
     <string name="list_routes_card_button">Show me.</string>
+    <string name="publication_card_title">Manage publications.</string>
+    <string name="publication_card_button">Manage.</string>
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->
@@ -44,4 +46,34 @@
     <string name="record_time">Time: %1$s:%2$s:%3$s</string>
     <string name="current_speed">Speed: %1$s km/h</string>
     <string name="total_distance">Distance: %1$s km</string>
+
+    <!--publication center activity-->
+    <string name="route_start_date">Date: %1$s</string>
+    <string name="route_publish_status">Status: %1$s</string>
+
+    <!--publication edit activity-->
+    <string name="start_date">Start date: %1$s</string>
+    <string name="end_date">End date: %1$s</string>
+    <string name="delta_time">Delta: %1$s:%2$s:%3$s</string>
+    <string name="stops_count">Stops: %1$s</string>
+    <string name="route_description">Describe your route…</string>
+    <string name="title_activity_publication_editor">Map</string>
+    <string name="end_pin_title">End</string>
+    <string name="set_rating">Set difficulty</string>
+    <string name="publish">Publish</string>
+    <string name="toggle_map">Toggle Map</string>
+    <string name="route_updated">Route updated successfully.</string>
+    <string name="details">Details</string>
+    <string name="additional_info">Additional Info</string>
+    <string name="pick_bike_type">Pick bike type</string>
+
+    <string-array name="bike_types">
+        <item>MTB</item>
+        <item>CROSS</item>
+        <item>GRAVEL</item>
+        <item>ROAD</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -5,7 +5,7 @@ import android.graphics.BitmapFactory
 import android.util.Base64
 import java.io.File
 
-class Base64Encoder {
+class Base64Xcoder {
     companion object {
         fun imagePathToString(filePath: String): String {
             val bytes = File(filePath).readBytes()

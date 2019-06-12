@@ -61,6 +61,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun onPublicationsClick(view: View) {
+        Intent(this, PublicationCenterActivity::class.java).also { startActivity(it) }
+    }
+
     private fun isUserLoggedIn(): Boolean {
         val userToken = sharedPreferences.getString("user_token", null)
 
