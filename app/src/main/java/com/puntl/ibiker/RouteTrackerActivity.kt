@@ -70,7 +70,6 @@ class RouteTrackerActivity : AppCompatActivity(), OnMapReadyCallback {
     private var startTime = 0L
     private var pauseTime = 0L
     private var delta = 0L
-//    private var lastPhotoFilePath = ""
     private var imageIndex: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,6 +78,9 @@ class RouteTrackerActivity : AppCompatActivity(), OnMapReadyCallback {
         supportActionBar?.hide()
 
         setContentView(R.layout.activity_route_tracker)
+
+        flowButton.visibility = View.INVISIBLE
+        photoButton.visibility = View.INVISIBLE
 
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
@@ -222,13 +224,13 @@ class RouteTrackerActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun setupTabLayout() {
         val fragmentAdapter = RecordFragmentPagerAdapter(applicationContext, supportFragmentManager, tabLayout.tabCount)
-        viewPager.adapter = fragmentAdapter
+        trackerViewPager.adapter = fragmentAdapter
 
-        viewPager!!.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
+        trackerViewPager!!.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
 
         tabLayout!!.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
-                viewPager!!.currentItem = tab.position
+                trackerViewPager!!.currentItem = tab.position
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {
@@ -268,6 +270,9 @@ class RouteTrackerActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun updateMap() {
         if (!::mMap.isInitialized or locationUpdates.isEmpty()) return
+
+        flowButton.visibility = View.VISIBLE
+        photoButton.visibility = View.VISIBLE
 
         mMap.clear()
 
@@ -319,8 +324,15 @@ class RouteTrackerActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun saveRoute() {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+        val customHeader = hashMapOf<String, String>()
+
+        customHeader["token"] = SessionProvider.getUserToken(sharedPreferences)?: return
 
         val userId = SessionProvider.getUser(sharedPreferences).userId
+
+        val volley = ServiceVolley()
+        val moshi = Moshi.Builder().build()
+        val moshiAdapter = moshi.adapter(Route::class.java)
 
         val routeToSave =
             Route(
@@ -340,26 +352,23 @@ class RouteTrackerActivity : AppCompatActivity(), OnMapReadyCallback {
                 mutableListOf()
             )
 
-        val volley = ServiceVolley()
-        val moshi = Moshi.Builder().build()
-        val moshiAdapter = moshi.adapter(Route::class.java)
         val json = moshiAdapter.toJson(routeToSave)
 
-        volley.callApi(ROUTE_URL, Request.Method.POST, JSONObject(json), TAG,
+        volley.callApi(ROUTE_URL, Request.Method.POST, JSONObject(json), TAG, customHeader,
             { response -> afterSaveSetup(response) },
             { error -> handleSaveError(error) }
         )
+    }
+
+    private fun afterSaveSetup(response: JSONObject?) {
+        Intent(applicationContext, MainActivity::class.java).also { startActivity(it) }
+        finish()
     }
 
     private fun handleSaveError(error: VolleyError?) {
         val messageJSON = JSONObject(String(error?.networkResponse!!.data))
         val messageString = messageJSON.get("message").toString()
         Toast.makeText(this, messageString, Toast.LENGTH_LONG).show()
-    }
-
-    private fun afterSaveSetup(response: JSONObject?) {
-        Intent(applicationContext, MainActivity::class.java).also { startActivity(it) }
-        finish()
     }
 
     private fun loadPicture() {

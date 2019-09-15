@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="wrap_content"
+                                             android:background="@color/colorPrimary"
+                                             android:layout_marginBottom="5dp">
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/linearLayout2" app:layout_constraintBottom_toTopOf="@+id/linearLayout3">
+        <TextView
+                android:text="@string/calculating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/commentUserTextView"/>
+        <TextView
+                android:text="@string/calculating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/commentDateTextView"
+        />
+    </LinearLayout>
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@color/softGray" android:gravity="center_horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+            android:id="@+id/linearLayout3">
+        <TextView
+                android:text="@string/comment_rating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/textView10"
+                android:textColor="@color/colorPrimary" android:layout_marginTop="5dp"/>
+        <View
+                android:id="@+id/divider6"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+        />
+        <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/commentRatingBar"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp" android:isIndicator="true"/>
+        <TextView
+                android:text="@string/comment_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/textView11" android:layout_marginTop="5dp"
+                android:textColor="@color/colorPrimary"/>
+        <View
+                android:id="@+id/divider7"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+        />
+        <TextView
+                android:text="@string/calculating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/commentTextView"/>
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

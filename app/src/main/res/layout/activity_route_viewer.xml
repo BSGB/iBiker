@@ -4,7 +4,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".PublicationEditorActivity" android:layout_weight="100" android:id="@+id/editorConstraintLayout">
+        tools:context=".RouteViewerActivity" android:layout_weight="100">
 
     <LinearLayout
             android:orientation="vertical"
@@ -12,7 +12,7 @@
             android:layout_height="0dp" android:weightSum="100" app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/constraintLayout" android:id="@+id/linearLayout4">
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout">
         <android.support.design.widget.TabLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -28,50 +28,46 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/photos_tab"/>
+            <android.support.design.widget.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/tabItem3"
+                    android:text="@string/comments_tab"/>
 
         </android.support.design.widget.TabLayout>
         <fragment
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/map"
-                tools:context=".PublicationEditorActivity"
+                tools:context=".RouteViewerActivity"
                 android:name="com.google.android.gms.maps.SupportMapFragment" android:layout_weight="50"
         />
         <android.support.v4.view.ViewPager
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" android:id="@+id/editorViewPager" android:layout_weight="50">
+                android:layout_height="match_parent" android:id="@+id/viewPager" android:layout_weight="50">
         </android.support.v4.view.ViewPager>
     </LinearLayout>
     <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
-            android:background="@android:color/background_light" android:layout_marginStart="8dp"
+            android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp" android:id="@+id/constraintLayout">
 
         <Switch
                 android:text="@string/toggle_map"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/toggleMapSwitch" android:layout_weight="0"
+                android:layout_height="wrap_content" android:id="@+id/switch3" android:layout_weight="0"
                 android:onClick="onToggleMapClick" style="?attr/buttonBarStyle"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
-        <Switch
-                android:text="@string/publish"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/publishSwitch" android:layout_weight="0"
-                style="?attr/buttonBarStyle"
-                app:layout_constraintEnd_toStartOf="@+id/saveButton" app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
         <Button
-                android:text="@string/save_route"
+                android:text="@string/start_route"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/saveButton" style="?attr/buttonBarStyle"
-                android:onClick="onSaveClick"
+                android:layout_height="wrap_content" android:id="@+id/goButton" style="?attr/buttonBarStyle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" android:onClick="onGoClick"/>
     </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>

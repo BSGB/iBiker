@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             tools:context=".fragments.ViewerCommentsFragment">
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:layout_marginStart="8dp" android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp" android:layout_marginBottom="8dp" android:gravity="center_horizontal">
+            <TextView
+                    android:text="@string/add_rating"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/textView9"
+                    android:textColor="@color/colorPrimary" android:layout_marginTop="5dp"/>
+            <RatingBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/rateCommentBar"/>
+            <TextView
+                    android:text="@string/add_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/textView8"
+                    android:textColor="@color/colorPrimary" android:layout_marginTop="5dp"/>
+            <View
+                    android:id="@+id/divider5"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider"
+            />
+            <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:gravity="start|top"
+                    android:ems="10"
+                    android:id="@+id/commentEditText" android:hint="@string/write_comment"/>
+            <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <Button
+                        android:text="@string/post_comment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/postButton" android:layout_weight="1"
+                        style="?attr/buttonBarStyle"
+                        app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
+            </android.support.constraint.ConstraintLayout>
+            <TextView
+                    android:text="@string/all_comments"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/textView12"
+                    android:textColor="@color/colorPrimary" android:layout_marginTop="5dp"/>
+            <View
+                    android:id="@+id/divider8"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider"
+            />
+            <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/commentsRecyclerView" android:paddingBottom="25dp"/>
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

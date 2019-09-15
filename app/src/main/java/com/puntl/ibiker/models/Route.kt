@@ -16,5 +16,5 @@ data class Route(
     var description: String?,
     var difficulty: Float?,
     var bikeType: String?,
-    var comments: List<UserComment>
+    var comments: MutableList<UserComment>
 )

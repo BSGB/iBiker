@@ -30,10 +30,7 @@ class MainActivity : AppCompatActivity() {
         return when (item?.itemId) {
             R.id.signOutMenuItem -> {
                 sharedPreferences.edit().putString("user_token", null).apply()
-
-                val loginRegisterActivity = Intent(applicationContext, LoginRegisterActivity::class.java)
-                startActivity(loginRegisterActivity)
-
+                Intent(applicationContext, LoginRegisterActivity::class.java).also { startActivity(it) }
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -52,6 +49,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        finishAffinity()
+    }
+
     fun onRecordRouteClick(view: View) {
         if (!isPermissionGranted()) {
             askForPermission()
@@ -63,6 +64,10 @@ class MainActivity : AppCompatActivity() {
 
     fun onPublicationsClick(view: View) {
         Intent(this, PublicationCenterActivity::class.java).also { startActivity(it) }
+    }
+
+    fun onRoutesClick(view: View) {
+        Intent(this, RouteGalleryActivity::class.java).also { startActivity(it) }
     }
 
     private fun isUserLoggedIn(): Boolean {
